@@ -4,6 +4,8 @@ def apply(c,e):
  a=e['action'];p=e.get('data',{});sid=e['subject']; loan=s.latest(c,'subjects',sid)
  if a=='seal':
   if not loan or loan['state']!='authorized':return s.decide(c,e,NAME,'blocked','contract-not-authorized','blocked')
+  permits=c.execute("SELECT state FROM documents WHERE subject=? AND kind='permit'",(sid,)).fetchall()
+  if not any(int(x['state'].split(':')[0])<=e['effective_at']<=int(x['state'].split(':')[1]) for x in permits):return s.decide(c,e,NAME,'blocked','outside-loan-period','blocked')
   if not p.get('seal') or int(p.get('items',0))<1:return s.decide(c,e,NAME,'blocked','box-list-or-seal-missing','blocked')
   c.execute('INSERT OR REPLACE INTO allocations VALUES(?,?,?,?,?)',(e['id'],sid,p['seal'],'sealed',loan['version']))
   return s.decide(c,e,NAME,'sealed','box-ready-for-release','sealed')
