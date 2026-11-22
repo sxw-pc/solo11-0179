@@ -1,0 +1,31 @@
+[
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "l1",
+      "subject": "artifact-1",
+      "action": "authorize",
+      "data": {
+        "start": 1,
+        "end": 20,
+        "version": 1
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t1",
+      "subject": "artifact-1",
+      "action": "seal",
+      "data": {
+        "seal": "seal-A",
+        "items": 1
+      },
+      "effective_at": 2,
+      "received_at": 2
+    }
+  }
+]
