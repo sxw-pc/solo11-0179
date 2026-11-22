@@ -5,15 +5,18 @@ def apply(c,e):
  if a=='authorize':
   begin,end=int(p['start']),int(p['end'])
   if end<begin:return s.decide(c,e,NAME,'blocked','invalid-period','blocked')
-  periods=c.execute("SELECT state FROM documents WHERE subject=? AND kind='permit'",(sid,)).fetchall() if not old or old['state']!='revoked' else []
+  revoked=c.execute("SELECT MAX(version) v FROM documents WHERE subject=? AND kind='permit-revocation'",(sid,)).fetchone()['v'] or 0
+  periods=c.execute("SELECT state FROM documents WHERE subject=? AND kind='permit' AND version>?",(sid,revoked)).fetchall()
   if any(not (end<int(x['state'].split(':')[0]) or begin>int(x['state'].split(':')[1])) for x in periods):return s.decide(c,e,NAME,'blocked','overlapping-loan','blocked')
   version=old['version']+1 if old else int(p.get('version',1))
   c.execute('INSERT OR REPLACE INTO subjects VALUES(?,?,?,?)',(sid,'artifact','authorized',version))
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'permit',version,f'{begin}:{end}'))
+  c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id']+'-parties',sid,'parties',version,f'{p.get("lender","museum-A")}:{p.get("borrower","museum-B")}'))
   return s.decide(c,e,NAME,'authorized','period-and-object-approved','authorized')
  if a=='revoke':
   if not old:return s.decide(c,e,NAME,'blocked','no-loan','blocked')
   c.execute("UPDATE subjects SET state='revoked',version=version+1 WHERE id=?",(sid,))
+  c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'permit-revocation',old['version']+1,'all-prior-permits'))
   c.execute("UPDATE allocations SET state='intercept' WHERE subject=? AND state IN ('sealed','in-transit')",(sid,))
   return s.decide(c,e,NAME,'revoked','in-transit-intercept-required','revoked')
  if a=='extend':
@@ -24,7 +27,7 @@ def apply(c,e):
   return s.decide(c,e,NAME,'extended','exhibition-term-renegotiated','authorized')
  if a=='liability':
   damaged=c.execute("SELECT 1 FROM receipts WHERE subject=? AND kind='damage'",(sid,)).fetchone()
-  broken=c.execute("SELECT 1 FROM allocations WHERE subject=? AND state='broken'",(sid,)).fetchone()
+  broken=c.execute("SELECT 1 FROM events WHERE subject=? AND subsystem='transit' AND action='break'",(sid,)).fetchone()
   cover=c.execute("SELECT state FROM documents WHERE subject=? AND kind='insurance' ORDER BY version DESC LIMIT 1",(sid,)).fetchone()
   covered=bool(cover and int(cover['state'].split(':')[0])<=e['effective_at']<=int(cover['state'].split(':')[1]))
   result='insured-carrier-review' if damaged and broken and covered else 'carrier-review' if damaged and broken else 'lender-review' if damaged else 'clear'

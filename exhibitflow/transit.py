@@ -11,16 +11,20 @@ def apply(c,e):
   return s.decide(c,e,NAME,'sealed','box-ready-for-release','sealed')
  if a=='handoff':
   box=s.latest(c,'allocations',p.get('box',''))
-  if not box or box['subject']!=sid or box['state'] not in ('sealed','in-transit'):return s.decide(c,e,NAME,'blocked','no-valid-box','blocked')
+  if not box or box['subject']!=sid or box['state'] not in ('sealed','in-transit','broken'):return s.decide(c,e,NAME,'blocked','no-valid-box','blocked')
   if not p.get('from') or not p.get('to') or p['from']==p['to']:return s.decide(c,e,NAME,'blocked','custody-gap','blocked')
   previous=c.execute("SELECT state FROM receipts WHERE subject=? AND kind='handoff' ORDER BY rowid DESC LIMIT 1",(sid,)).fetchone()
+  parties=c.execute("SELECT state FROM documents WHERE subject=? AND kind='parties' ORDER BY version DESC LIMIT 1",(sid,)).fetchone()
+  lender,borrower=parties['state'].split(':') if parties else ('museum-A','museum-B')
+  if not previous and p['from']!=lender:return s.decide(c,e,NAME,'blocked','initial-custodian-mismatch','blocked')
   if previous and previous['state']!=p['from']:return s.decide(c,e,NAME,'blocked','previous-custodian-mismatch','blocked')
-  c.execute("UPDATE allocations SET state='in-transit' WHERE id=?",(box['id'],))
+  state='broken-arrived' if p['to']==borrower and box['state']=='broken' else 'arrived' if p['to']==borrower else 'broken' if box['state']=='broken' else 'in-transit'
+  c.execute('UPDATE allocations SET state=? WHERE id=?',(state,box['id']))
   c.execute('INSERT OR REPLACE INTO receipts VALUES(?,?,?,?,?)',(e['id'],sid,'handoff',p['to'],0))
-  return s.decide(c,e,NAME,'in-transit','custody-transferred','in-transit')
+  return s.decide(c,e,NAME,state,'custody-transferred',state)
  if a=='break':
   box=s.latest(c,'allocations',p.get('box',''))
-  if not box or box['subject']!=sid:return s.decide(c,e,NAME,'blocked','unknown-box','blocked')
+  if not box or box['subject']!=sid or box['state']!='in-transit':return s.decide(c,e,NAME,'blocked','no-in-transit-box','blocked')
   c.execute("UPDATE allocations SET state='broken' WHERE id=?",(box['id'],))
   return s.decide(c,e,NAME,'quarantine','seal-broken-inspection-required','broken')
  if a=='reseal':

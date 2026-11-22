@@ -4,12 +4,12 @@ def apply(c,e):
  a=e['action'];p=e.get('data',{});sid=e['subject'];loan=s.latest(c,'subjects',sid)
  if a=='inspect':
   box=s.latest(c,'allocations',p.get('box',''))
-  if not box or box['subject']!=sid:return s.decide(c,e,NAME,'blocked','no-arrival-box','blocked')
+  if not box or box['subject']!=sid or box['state'] not in ('arrived','broken-arrived'):return s.decide(c,e,NAME,'blocked','no-receiving-handoff','blocked')
   baseline=c.execute("SELECT state FROM documents WHERE subject=? AND kind='baseline' ORDER BY version DESC LIMIT 1",(sid,)).fetchone()
   damaged=bool(p.get('damage')) or (baseline is not None and int(p.get('condition_score',100))<int(baseline['state']))
   status='damage' if damaged else 'sound'
   c.execute('INSERT OR REPLACE INTO receipts VALUES(?,?,?,?,?)',(e['id'],sid,'damage' if damaged else 'inspection',status,0))
-  outcome='hold' if damaged or box['state']=='broken' or not loan or loan['state']!='authorized' else 'inspected'
+  outcome='hold' if damaged or box['state']=='broken-arrived' or not loan or loan['state']!='authorized' else 'inspected'
   return s.decide(c,e,NAME,outcome,'condition-and-custody-compared',outcome)
  if a=='environment':
   temp=int(p.get('temp',99));humidity=int(p.get('humidity',99))

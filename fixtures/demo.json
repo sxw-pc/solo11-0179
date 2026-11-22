@@ -44,6 +44,21 @@
     }
   },
   {
+    "subsystem": "transit",
+    "event": {
+      "id": "t3",
+      "subject": "artifact-1",
+      "action": "handoff",
+      "data": {
+        "box": "t1",
+        "from": "carrier",
+        "to": "museum-B"
+      },
+      "effective_at": 4,
+      "received_at": 4
+    }
+  },
+  {
     "subsystem": "condition",
     "event": {
       "id": "c1",
@@ -53,8 +68,8 @@
         "box": "t1",
         "damage": false
       },
-      "effective_at": 4,
-      "received_at": 4
+      "effective_at": 5,
+      "received_at": 5
     }
   },
   {
@@ -67,46 +82,105 @@
         "temp": 21,
         "humidity": 50
       },
-      "effective_at": 5,
-      "received_at": 5
+      "effective_at": 6,
+      "received_at": 6
+    }
+  },
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "l3",
+      "subject": "artifact-2",
+      "action": "authorize",
+      "data": {
+        "start": 1,
+        "end": 20,
+        "version": 1
+      },
+      "effective_at": 1,
+      "received_at": 1
     }
   },
   {
     "subsystem": "transit",
     "event": {
-      "id": "t3",
-      "subject": "artifact-1",
+      "id": "t4",
+      "subject": "artifact-2",
+      "action": "seal",
+      "data": {
+        "seal": "seal-B",
+        "items": 1
+      },
+      "effective_at": 2,
+      "received_at": 2
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t5",
+      "subject": "artifact-2",
+      "action": "handoff",
+      "data": {
+        "box": "t4",
+        "from": "museum-A",
+        "to": "carrier"
+      },
+      "effective_at": 3,
+      "received_at": 3
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t6",
+      "subject": "artifact-2",
       "action": "break",
       "data": {
-        "box": "t1"
+        "box": "t4"
       },
-      "effective_at": 6,
-      "received_at": 6
+      "effective_at": 4,
+      "received_at": 4
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t7",
+      "subject": "artifact-2",
+      "action": "handoff",
+      "data": {
+        "box": "t4",
+        "from": "carrier",
+        "to": "museum-B"
+      },
+      "effective_at": 5,
+      "received_at": 5
     }
   },
   {
     "subsystem": "condition",
     "event": {
       "id": "c3",
-      "subject": "artifact-1",
+      "subject": "artifact-2",
       "action": "inspect",
       "data": {
-        "box": "t1",
+        "box": "t4",
         "damage": true
       },
-      "effective_at": 7,
-      "received_at": 7
+      "effective_at": 6,
+      "received_at": 6
     }
   },
   {
     "subsystem": "loan",
     "event": {
       "id": "l2",
-      "subject": "artifact-1",
+      "subject": "artifact-2",
       "action": "liability",
       "data": {},
-      "effective_at": 8,
-      "received_at": 8
+      "effective_at": 7,
+      "received_at": 7
     }
   }
 ]

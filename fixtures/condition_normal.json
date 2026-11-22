@@ -44,6 +44,21 @@
     }
   },
   {
+    "subsystem": "transit",
+    "event": {
+      "id": "t3",
+      "subject": "artifact-1",
+      "action": "handoff",
+      "data": {
+        "box": "t1",
+        "from": "carrier",
+        "to": "museum-B"
+      },
+      "effective_at": 4,
+      "received_at": 4
+    }
+  },
+  {
     "subsystem": "condition",
     "event": {
       "id": "c1",
@@ -53,8 +68,8 @@
         "box": "t1",
         "damage": false
       },
-      "effective_at": 4,
-      "received_at": 4
+      "effective_at": 5,
+      "received_at": 5
     }
   }
 ]
