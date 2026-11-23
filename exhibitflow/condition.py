@@ -5,6 +5,10 @@ def apply(c,e):
  if a=='inspect':
   box=s.latest(c,'allocations',p.get('box',''))
   if not box or box['subject']!=sid or box['state'] not in ('arrived','broken-arrived'):return s.decide(c,e,NAME,'blocked','no-receiving-handoff','blocked')
+  order=c.execute("SELECT * FROM handoff_orders WHERE trip=? AND state='completed' ORDER BY effective_at DESC,id DESC LIMIT 1",(p.get('trip',''),)).fetchone()
+  if p.get('trip'):
+   if not order:return s.decide(c,e,NAME,'blocked','no-completed-dispatch-order','blocked')
+   if int(e['effective_at'])<int(order['effective_at']):return s.decide(c,e,NAME,'blocked','inspection-precedes-handoff','blocked')
   baseline=c.execute("SELECT state FROM documents WHERE subject=? AND kind='baseline' ORDER BY version DESC LIMIT 1",(sid,)).fetchone()
   damaged=bool(p.get('damage')) or (baseline is not None and int(p.get('condition_score',100))<int(baseline['state']))
   status='damage' if damaged else 'sound'

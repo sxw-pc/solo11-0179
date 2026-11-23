@@ -1,0 +1,188 @@
+[
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-road-1",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "road",
+        "ref": "roads.csv",
+        "content": [
+          {
+            "id": "P",
+            "capacity": 1,
+            "clear_height": 4.2,
+            "permit_required": true
+          },
+          {
+            "id": "Q",
+            "capacity": 1,
+            "clear_height": 3.4,
+            "permit_required": false
+          }
+        ]
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-vehicle-1",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "vehicle",
+        "ref": "escort-roster.json",
+        "content": [
+          {
+            "id": "V1",
+            "max_height": 4.0,
+            "routes": [
+              "P",
+              "Q"
+            ],
+            "escort_ok": true
+          },
+          {
+            "id": "V2",
+            "max_height": 4.0,
+            "routes": [
+              "P",
+              "Q"
+            ],
+            "escort_ok": true
+          },
+          {
+            "id": "V3",
+            "max_height": 3.6,
+            "routes": [
+              "P"
+            ],
+            "escort_ok": false
+          }
+        ]
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-cargo-1",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "cargo",
+        "ref": "box-parts.csv",
+        "content": [
+          {
+            "id": "box-1",
+            "artifact": "artifact-1",
+            "box": "seal-A",
+            "height": 3.2,
+            "part": "CASE-001"
+          },
+          {
+            "id": "box-2",
+            "artifact": "artifact-2",
+            "box": "seal-B",
+            "height": 3.6,
+            "part": "CASE-002"
+          }
+        ]
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-permit-1",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "permit",
+        "ref": "permits.json",
+        "content": [
+          {
+            "id": "permit-P-1",
+            "road_id": "P",
+            "window_from": "2026-06-01T00:00:00",
+            "window_to": "2026-06-02T00:00:00",
+            "issuer": "public-works",
+            "status": "granted"
+          }
+        ]
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-ann-1",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "announcement",
+        "ref": "screenshot-ocr.txt",
+        "content": [
+          "issuer: road-authority",
+          "road_id: P",
+          "notice_no: RA-100",
+          "status: closure",
+          "valid: 2026-06-01T08:00:00/2026-06-01T09:00:00",
+          "published_at: 2026-05-30T12:00:00"
+        ]
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-ann-2",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "announcement",
+        "ref": "work-zone-feed.json",
+        "content": [
+          {
+            "issuer": "bridge-authority",
+            "road_id": "P",
+            "notice_no": "BA-7",
+            "status": "open",
+            "valid_from": "2026-06-01T08:00:00",
+            "valid_to": "2026-06-01T09:00:00",
+            "published_at": "2026-05-30T13:00:00"
+          }
+        ]
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "rc-ics-1",
+      "subject": "convoy",
+      "action": "capture",
+      "data": {
+        "kind": "ics",
+        "ref": "carrier-cycle.ics",
+        "content": "BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:series-V1-0900\nDTSTART;TZID=America/New_York:20260601T090000\nDTEND;TZID=America/New_York:20260601T100000\nVEHICLE:V1\nROUTE:P\nARTIFACT:artifact-1\nSTATUS:CONFIRMED\nEND:VEVENT\nBEGIN:VEVENT\nUID:series-V2-0900\nDTSTART;TZID=America/New_York:20260601T090000\nDTEND;TZID=America/New_York:20260601T100000\nVEHICLE:V2\nROUTE:P\nARTIFACT:artifact-2\nSTATUS:CONFIRMED\nEND:VEVENT\nEND:VCALENDAR\n"
+      },
+      "effective_at": 1,
+      "received_at": 1
+    }
+  }
+]

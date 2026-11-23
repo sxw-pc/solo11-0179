@@ -34,6 +34,17 @@
 
 失败证据：`fixtures/condition_failure.json`。到馆状态、环境记录与归还比较决定是否开箱展示。持久化对象包括 状况照片、展陈环境，领域模块位于 `exhibitflow/condition.py`。
 
+### 车队路线采录与派车
+
+`python -m exhibitflow demo --db convoy.db --fixture fixtures/convoy-routes.json`
+
+采录外部证据（道路公告截图/OCR、承运 ICS 循环实例、临时改线 CSV、逐车护运资质、道路通行许可、车厢件号、封条换车记录），归一化后求全局派路，领域模块位于 `exhibitflow/route_capture.py`。派生表全部由 `sources` 存档重建，重跑得到相同车次身份、冲突图与当前派车表。`transit` 的 `dispatch` 事件写入 `convoy_plans`、`handoff_orders`（已发指令被改线推翻时保留 `superseded_by` 历史并记 `compensation_events`）与 `conflict_edges`。
+
+- 公告按发布主体与有效区间归并：不同发行方相同 `road_id` 互不覆盖，撤回仅撤自己发行方的通知。
+- `RECURRENCE-ID` 只替换该次车次，未触及的系列实例保留；夏令时回拨用 `FOLD` 保持同墙钟两次车次身份不同。
+- 冲突边显式建模单车道路段容量与同一份许可的消耗；`solve` 穷举全局交换，`greedy` 复现按车次先后的局部贪心以便对照。
+- 签认协议两种边界：`transferable-endorsement` 允许发车前双签改线，`locked-endorsement` 固定原签认路线并把另一车标为无解。
+
 ## 持久化与恢复
 
 `events` 留原始 JSON、摘要、有效时刻和接收时刻。`subjects`、`documents`、`allocations`、`receipts` 留业务主体、版本、占位与回执；`decisions` 保存每次裁定。事件 ID 相同且摘要相同视为重试，摘要不同拒绝。每个命令在 SQLite 事务内更新事件、状态和决定，避免半写。`audit` 在独立内存数据库从原始事件重新运行规则，对照五类表，可发现被篡改的裁定。

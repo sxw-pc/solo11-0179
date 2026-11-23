@@ -42,4 +42,14 @@ def apply(c,e):
   if not broken or broken['subject']!=sid or broken['state']!='broken':return s.decide(c,e,NAME,'blocked','no-broken-box','blocked')
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'reseal-approval',old['version'] if old else 0,broken['id']))
   return s.decide(c,e,NAME,'approved','broken-seal-remains-in-history','approved')
+ if a=='sign_route':
+  from . import route_capture as rc
+  trip=s.latest(c,'trips',p.get('trip',''))
+  if not trip:return s.decide(c,e,NAME,'blocked','unknown-trip','blocked')
+  protocol=p.get('protocol') or rc.LOCKED
+  if protocol not in (rc.LOCKED,rc.TRANSFERABLE):return s.decide(c,e,NAME,'blocked','unknown-endorsement-protocol','blocked')
+  routes=[o['route'] for o in rc.route_options(c).get(trip['id'],{}).get('options',[])]
+  if p.get('route') not in routes:return s.decide(c,e,NAME,'blocked','route-not-feasible-for-trip','blocked')
+  c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],trip['id'],'signoff',e['effective_at'],f"{p['route']}|{protocol}"))
+  return s.decide(c,e,NAME,'signed',f'{protocol}-route-acknowledged','signed')
  return s.decide(c,e,NAME,'blocked','unknown-action','blocked')
