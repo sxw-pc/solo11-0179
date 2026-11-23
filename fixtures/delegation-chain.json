@@ -1,0 +1,102 @@
+[
+  {
+    "subsystem": "authority",
+    "event": {
+      "id": "auth-d1",
+      "subject": "artifact-1",
+      "action": "delegation",
+      "effective_at": 1,
+      "received_at": 1,
+      "data": {
+        "source_doc": "board-resolution-BR-200",
+        "delegator": {"name": "Board", "employee_id": "board", "title": "board-of-directors"},
+        "delegate": {"name": "Iris", "employee_id": "DIR-1", "title": "director"},
+        "valid_from": 1,
+        "valid_to": 10,
+        "max_value": 200,
+        "destinations": ["B"],
+        "redelegable": true,
+        "signature": {"seal": "board-seal", "by": "board", "at": 1},
+        "root_authority": true
+      }
+    }
+  },
+  {
+    "subsystem": "authority",
+    "event": {
+      "id": "auth-d2",
+      "subject": "artifact-1",
+      "action": "delegation",
+      "effective_at": 2,
+      "received_at": 2,
+      "data": {
+        "source_doc": "director-letter-DIR-100",
+        "delegator": {"name": "Iris", "employee_id": "DIR-1", "title": "director"},
+        "delegate": {"name": "Curator C", "employee_id": "CUR-2", "title": "curator"},
+        "valid_from": 1,
+        "valid_to": 8,
+        "max_value": 100,
+        "destinations": ["B"],
+        "redelegable": true,
+        "signature": {"seal": "director-seal", "by": "DIR-1", "at": 2}
+      }
+    }
+  },
+  {
+    "subsystem": "authority",
+    "event": {
+      "id": "auth-d3",
+      "subject": "artifact-1",
+      "action": "delegation",
+      "effective_at": 3,
+      "received_at": 3,
+      "data": {
+        "source_doc": "curator-subdelegation-CUR-150",
+        "delegator": {"name": "Curator C", "employee_id": "CUR-2", "title": "curator"},
+        "delegate": {"name": "Assistant D", "employee_id": "AST-3", "title": "assistant"},
+        "valid_from": 1,
+        "valid_to": 10,
+        "max_value": 150,
+        "destinations": ["B"],
+        "redelegable": true,
+        "signature": {"seal": "curator-seal", "by": "CUR-2", "at": 3}
+      }
+    }
+  },
+  {
+    "subsystem": "authority",
+    "event": {
+      "id": "auth-v1",
+      "subject": "artifact-1",
+      "action": "valuation",
+      "effective_at": 2,
+      "received_at": 4,
+      "data": {
+        "artifact": "artifact-1",
+        "value": 120,
+        "destination": "B",
+        "source_doc": "valuation-VAL-120",
+        "effective_at": 2
+      }
+    }
+  },
+  {
+    "subsystem": "authority",
+    "event": {
+      "id": "auth-s1",
+      "subject": "artifact-1",
+      "action": "signature",
+      "effective_at": 6,
+      "received_at": 5,
+      "data": {
+        "protocol": "loan-agreement-1",
+        "document": "loan-agreement-1",
+        "signer": {"name": "Assistant D", "employee_id": "AST-3", "title": "assistant"},
+        "at": 6,
+        "destination": "B",
+        "signature": {"seal": "assistant-seal", "by": "AST-3", "at": 6},
+        "seal_coords": {"page": 3, "x": 120, "y": 240}
+      }
+    }
+  }
+]

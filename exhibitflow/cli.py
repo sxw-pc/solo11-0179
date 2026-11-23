@@ -2,9 +2,9 @@
 import argparse, json
 from pathlib import Path
 from . import storage
-from . import loan, transit, condition
+from . import authority, loan, transit, condition
 
-HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply}
+HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply,'authority':authority.apply}
 
 def run_event(con, subsystem, event):
     if subsystem not in HANDLERS: raise ValueError('unknown-subsystem')
@@ -19,12 +19,12 @@ def audit(con):
     for row in con.execute('SELECT subsystem,payload FROM events ORDER BY rowid'):
         run_event(replay,row['subsystem'],json.loads(row['payload']))
     actual=storage.report(con); expected=storage.report(replay)
-    mismatches=[key for key in ('events','decisions','subjects','allocations','receipts') if actual[key]!=expected[key]]
+    mismatches=[key for key in ('events','decisions','subjects','allocations','receipts','authority_evaluations','compensations') if actual[key]!=expected[key]]
     replay.close()
     return {'ok':not mismatches,'mismatches':mismatches,'replayed_events':len(expected['events'])}
 
 def main(argv=None):
-    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); args=p.parse_args(argv)
+    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition','authority']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); args=p.parse_args(argv)
     con=storage.connect(args.db)
     if args.command=='init': print(json.dumps({'db':args.db,'initialized':True}));return
     if args.command=='report': print(json.dumps(storage.report(con),ensure_ascii=False,indent=2));return
