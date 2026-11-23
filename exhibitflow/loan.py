@@ -26,6 +26,8 @@ def apply(c,e):
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'permit',version,f'{e["effective_at"]}:{p["end"]}'))
   return s.decide(c,e,NAME,'extended','exhibition-term-renegotiated','authorized')
  if a=='liability':
+  # 仅定性来源:insured-carrier-review 只表示应走保险+承运审查,不代表已收到赔款;
+  # 实际金额由 claims 子系统按事故号共享限额分配、收付并对账。
   damaged=c.execute("SELECT 1 FROM receipts WHERE subject=? AND kind='damage'",(sid,)).fetchone()
   broken=c.execute("SELECT 1 FROM events WHERE subject=? AND subsystem='transit' AND action='break'",(sid,)).fetchone()
   cover=c.execute("SELECT state FROM documents WHERE subject=? AND kind='insurance' ORDER BY version DESC LIMIT 1",(sid,)).fetchone()
@@ -36,6 +38,8 @@ def apply(c,e):
  if a=='insurance':
   if not old or old['state']!='authorized' or int(p.get('end',0))<int(p.get('start',0)):return s.decide(c,e,NAME,'blocked','invalid-coverage','blocked')
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'insurance',old['version'],f'{p["start"]}:{p["end"]}'))
+  if p.get('policy'):
+   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id']+'-policy',sid,'policy',old['version'],f'{p["policy"]}:{p.get("tier","standard")}'))
   return s.decide(c,e,NAME,'covered','insurance-window-bound-to-loan','covered')
  if a=='approve_reseal':
   broken=s.latest(c,'allocations',p.get('box',''))

@@ -2,9 +2,9 @@
 import argparse, json
 from pathlib import Path
 from . import storage
-from . import loan, transit, condition
+from . import loan, transit, condition, claims
 
-HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply}
+HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply,'claims':claims.apply}
 
 def run_event(con, subsystem, event):
     if subsystem not in HANDLERS: raise ValueError('unknown-subsystem')
@@ -24,11 +24,14 @@ def audit(con):
     return {'ok':not mismatches,'mismatches':mismatches,'replayed_events':len(expected['events'])}
 
 def main(argv=None):
-    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); args=p.parse_args(argv)
+    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','settlement','loan','transit','condition','claims']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); p.add_argument('--incident'); args=p.parse_args(argv)
     con=storage.connect(args.db)
     if args.command=='init': print(json.dumps({'db':args.db,'initialized':True}));return
     if args.command=='report': print(json.dumps(storage.report(con),ensure_ascii=False,indent=2));return
     if args.command=='audit': print(json.dumps(audit(con),ensure_ascii=False,indent=2));return
+    if args.command=='settlement':
+        if not args.incident: p.error('--incident required')
+        print(json.dumps(claims.report(con,args.incident),ensure_ascii=False,indent=2));return
     if args.command=='demo':
         rows=json.loads((Path(args.fixture) if args.fixture else Path(__file__).resolve().parent.parent/'fixtures'/'demo.json').read_text(encoding='utf-8'))
         result=[run_event(con,x['subsystem'],x['event']) for x in rows]

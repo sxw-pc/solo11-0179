@@ -9,7 +9,17 @@ CREATE TABLE IF NOT EXISTS subjects(id TEXT PRIMARY KEY, kind TEXT NOT NULL, sta
 CREATE TABLE IF NOT EXISTS documents(id TEXT PRIMARY KEY, subject TEXT NOT NULL, kind TEXT NOT NULL, version INTEGER NOT NULL, state TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS allocations(id TEXT PRIMARY KEY, subject TEXT NOT NULL, resource TEXT NOT NULL, state TEXT NOT NULL, version INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS receipts(id TEXT PRIMARY KEY, subject TEXT NOT NULL, kind TEXT NOT NULL, state TEXT NOT NULL, amount INTEGER NOT NULL DEFAULT 0);
+CREATE INDEX IF NOT EXISTS idx_receipts_subject ON receipts(subject,kind);
+CREATE INDEX IF NOT EXISTS idx_documents_subject ON documents(subject,kind);
 """
+
+def money(points):
+    """金额归一:分(可带两位小数)转为厘整数存储,避免浮点误差。"""
+    return int(round(float(points)*100))
+
+def points(cents):
+    """厘整数转回分,保留两位小数。"""
+    return round(cents/100,2)
 
 def connect(path):
     if str(path)==':memory:': con=sqlite3.connect(':memory:')

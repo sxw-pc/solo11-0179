@@ -1,0 +1,266 @@
+[
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "l1",
+      "subject": "artifact-1",
+      "action": "authorize",
+      "data": {"start": 1, "end": 100, "version": 1},
+      "effective_at": 1,
+      "received_at": 1
+    }
+  },
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "i1",
+      "subject": "artifact-1",
+      "action": "insurance",
+      "data": {"start": 1, "end": 100, "policy": "POL-8", "tier": "trip"},
+      "effective_at": 2,
+      "received_at": 2
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t1",
+      "subject": "artifact-1",
+      "action": "seal",
+      "data": {"seal": "seal-A", "items": 1},
+      "effective_at": 3,
+      "received_at": 3
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t2",
+      "subject": "artifact-1",
+      "action": "handoff",
+      "data": {"box": "t1", "from": "museum-A", "to": "carrier"},
+      "effective_at": 4,
+      "received_at": 4
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t3",
+      "subject": "artifact-1",
+      "action": "break",
+      "data": {"box": "t1", "incident": "INC-8"},
+      "effective_at": 5,
+      "received_at": 5
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t4",
+      "subject": "artifact-1",
+      "action": "handoff",
+      "data": {"box": "t1", "from": "carrier", "to": "museum-B"},
+      "effective_at": 6,
+      "received_at": 6
+    }
+  },
+  {
+    "subsystem": "condition",
+    "event": {
+      "id": "c1",
+      "subject": "artifact-1",
+      "action": "inspect",
+      "data": {"box": "t1", "damage": true, "repair_quote": 800},
+      "effective_at": 7,
+      "received_at": 7
+    }
+  },
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "lb1",
+      "subject": "artifact-1",
+      "action": "liability",
+      "data": {},
+      "effective_at": 8,
+      "received_at": 8
+    }
+  },
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "l2",
+      "subject": "artifact-2",
+      "action": "authorize",
+      "data": {"start": 1, "end": 100, "version": 1},
+      "effective_at": 9,
+      "received_at": 9
+    }
+  },
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "i2",
+      "subject": "artifact-2",
+      "action": "insurance",
+      "data": {"start": 1, "end": 100, "policy": "POL-8", "tier": "trip"},
+      "effective_at": 10,
+      "received_at": 10
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t5",
+      "subject": "artifact-2",
+      "action": "seal",
+      "data": {"seal": "seal-B", "items": 1},
+      "effective_at": 11,
+      "received_at": 11
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t6",
+      "subject": "artifact-2",
+      "action": "handoff",
+      "data": {"box": "t5", "from": "museum-A", "to": "carrier"},
+      "effective_at": 12,
+      "received_at": 12
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t7",
+      "subject": "artifact-2",
+      "action": "break",
+      "data": {"box": "t5", "incident": "INC-8"},
+      "effective_at": 13,
+      "received_at": 13
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "t8",
+      "subject": "artifact-2",
+      "action": "handoff",
+      "data": {"box": "t5", "from": "carrier", "to": "museum-B"},
+      "effective_at": 14,
+      "received_at": 14
+    }
+  },
+  {
+    "subsystem": "condition",
+    "event": {
+      "id": "c2",
+      "subject": "artifact-2",
+      "action": "inspect",
+      "data": {"box": "t5", "damage": true, "repair_quote": 700},
+      "effective_at": 15,
+      "received_at": 15
+    }
+  },
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "lb2",
+      "subject": "artifact-2",
+      "action": "liability",
+      "data": {},
+      "effective_at": 16,
+      "received_at": 16
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "e1",
+      "subject": "INC-8",
+      "action": "endorsement",
+      "data": {"cap": 1000, "policy": "POL-8", "page": 1, "start": 1, "end": 100, "clause": "priority"},
+      "effective_at": 17,
+      "received_at": 17
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "as1",
+      "subject": "artifact-1",
+      "action": "assess",
+      "data": {"incident": "INC-8", "amount": 800, "deductible": 100, "invoice": "INV-1", "assessor": "adjuster-A", "damage_event": "c1", "break_event": "t3"},
+      "effective_at": 18,
+      "received_at": 18
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "as2",
+      "subject": "artifact-2",
+      "action": "assess",
+      "data": {"incident": "INC-8", "amount": 700, "deductible": 100, "invoice": "INV-2", "assessor": "adjuster-A", "damage_event": "c2", "break_event": "t7"},
+      "effective_at": 19,
+      "received_at": 19
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "p1",
+      "subject": "artifact-1",
+      "action": "payment",
+      "data": {"incident": "INC-8", "amount": 700, "ref": "PAY-1"},
+      "effective_at": 20,
+      "received_at": 20
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "p2",
+      "subject": "artifact-2",
+      "action": "payment",
+      "data": {"incident": "INC-8", "amount": 300, "ref": "PAY-2"},
+      "effective_at": 21,
+      "received_at": 21
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "sv1",
+      "subject": "artifact-1",
+      "action": "salvage",
+      "data": {"incident": "INC-8", "amount": 100, "ref": "SALV-1"},
+      "effective_at": 22,
+      "received_at": 22
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "cc1",
+      "subject": "artifact-1",
+      "action": "carrier_confirm",
+      "data": {"incident": "INC-8", "amount": 100},
+      "effective_at": 23,
+      "received_at": 23
+    }
+  },
+  {
+    "subsystem": "claims",
+    "event": {
+      "id": "cc2",
+      "subject": "artifact-2",
+      "action": "carrier_confirm",
+      "data": {"incident": "INC-8", "amount": 300},
+      "effective_at": 24,
+      "received_at": 24
+    }
+  }
+]

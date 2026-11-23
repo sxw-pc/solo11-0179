@@ -8,7 +8,7 @@ def apply(c,e):
   baseline=c.execute("SELECT state FROM documents WHERE subject=? AND kind='baseline' ORDER BY version DESC LIMIT 1",(sid,)).fetchone()
   damaged=bool(p.get('damage')) or (baseline is not None and int(p.get('condition_score',100))<int(baseline['state']))
   status='damage' if damaged else 'sound'
-  c.execute('INSERT OR REPLACE INTO receipts VALUES(?,?,?,?,?)',(e['id'],sid,'damage' if damaged else 'inspection',status,0))
+  c.execute('INSERT OR REPLACE INTO receipts VALUES(?,?,?,?,?)',(e['id'],sid,'damage' if damaged else 'inspection',status,s.money(p.get('repair_quote',0)) if damaged else 0))
   outcome='hold' if damaged or box['state']=='broken-arrived' or not loan or loan['state']!='authorized' else 'inspected'
   return s.decide(c,e,NAME,outcome,'condition-and-custody-compared',outcome)
  if a=='environment':

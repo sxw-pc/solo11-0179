@@ -26,6 +26,8 @@ def apply(c,e):
   box=s.latest(c,'allocations',p.get('box',''))
   if not box or box['subject']!=sid or box['state']!='in-transit':return s.decide(c,e,NAME,'blocked','no-in-transit-box','blocked')
   c.execute("UPDATE allocations SET state='broken' WHERE id=?",(box['id'],))
+  if p.get('incident'):
+   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id']+'-incident',sid,'incident',box['version'],str(p['incident'])))
   return s.decide(c,e,NAME,'quarantine','seal-broken-inspection-required','broken')
  if a=='reseal':
   box=s.latest(c,'allocations',p.get('box',''))
