@@ -2,9 +2,12 @@
 import argparse, json
 from pathlib import Path
 from . import storage
-from . import loan, transit, condition
+from . import loan, transit, condition, catalog
 
-HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply}
+HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply,'catalog':catalog.apply}
+REPORT_KEYS=('events','decisions','subjects','allocations','receipts',
+             'chrono_sources','chrono_readings','chrono_editorials','chrono_edges',
+             'catalog_versions','catalog_errata')
 
 def run_event(con, subsystem, event):
     if subsystem not in HANDLERS: raise ValueError('unknown-subsystem')
@@ -19,12 +22,22 @@ def audit(con):
     for row in con.execute('SELECT subsystem,payload FROM events ORDER BY rowid'):
         run_event(replay,row['subsystem'],json.loads(row['payload']))
     actual=storage.report(con); expected=storage.report(replay)
-    mismatches=[key for key in ('events','decisions','subjects','allocations','receipts') if actual[key]!=expected[key]]
+    mismatches=[key for key in REPORT_KEYS if actual[key]!=expected[key]]
     replay.close()
     return {'ok':not mismatches,'mismatches':mismatches,'replayed_events':len(expected['events'])}
 
+def run_catalog_fixture(con, data, scenario=None):
+    """Ingest a catalog fixture, optionally replaying one named scenario."""
+    rows=list(data.get('base_events', []))
+    if scenario:
+        if scenario not in data.get('scenarios', {}):
+            raise ValueError(f'unknown-scenario:{scenario}')
+        rows=rows+list(data['scenarios'][scenario])
+    results=[run_event(con,row['subsystem'],row['event']) for row in rows]
+    return results
+
 def main(argv=None):
-    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); args=p.parse_args(argv)
+    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition','catalog']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); p.add_argument('--scenario'); args=p.parse_args(argv)
     con=storage.connect(args.db)
     if args.command=='init': print(json.dumps({'db':args.db,'initialized':True}));return
     if args.command=='report': print(json.dumps(storage.report(con),ensure_ascii=False,indent=2));return
@@ -35,6 +48,9 @@ def main(argv=None):
         print(json.dumps({'results':result,'report':storage.report(con)},ensure_ascii=False,indent=2));return
     if not args.fixture: p.error('--fixture required')
     data=json.loads(Path(args.fixture).read_text(encoding='utf-8'))
+    if args.command=='catalog':
+        results=run_catalog_fixture(con,data,args.scenario)
+        print(json.dumps({'scenario':args.scenario,'results':results,'report':storage.report(con)},ensure_ascii=False,indent=2));return
     events=data if isinstance(data,list) else [data]
     print(json.dumps([run_event(con,e['subsystem'],e['event']) if 'event' in e else run_event(con,args.command,e) for e in events],ensure_ascii=False,indent=2))
 

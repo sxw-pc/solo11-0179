@@ -1,0 +1,632 @@
+{
+  "description": "Joint chronology ingestion for the fixed A/B/C counterexample. Internal sequence: 1 BCE=0, 1 CE=1, 2 CE=2, 3 CE=3.",
+  "base_events": [
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "src-card-1",
+        "subject": "card-1",
+        "action": "ingest_source",
+        "data": {
+          "source_id": "card-1",
+          "kind": "catalog-card",
+          "summary": "修复卡：铜灯A纪年读数 1 BCE–2 CE",
+          "page": "card-1",
+          "era_system": "BCE-CE",
+          "translation_version": "zh-v1",
+          "reviewer": "curator-qian",
+          "revised_at": 1
+        },
+        "effective_at": 1,
+        "received_at": 1
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "src-card-2",
+        "subject": "card-2",
+        "action": "ingest_source",
+        "data": {
+          "source_id": "card-2",
+          "kind": "catalog-card",
+          "summary": "修复卡：器物B纪年读数 2 CE–3 CE",
+          "page": "card-2",
+          "era_system": "BCE-CE",
+          "translation_version": "zh-v1",
+          "reviewer": "curator-qian",
+          "revised_at": 1
+        },
+        "effective_at": 1,
+        "received_at": 1
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "src-card-3",
+        "subject": "card-3",
+        "action": "ingest_source",
+        "data": {
+          "source_id": "card-3",
+          "kind": "catalog-card",
+          "summary": "修复卡：器物C纪年读数 1 CE–3 CE",
+          "page": "card-3",
+          "era_system": "BCE-CE",
+          "translation_version": "zh-v1",
+          "reviewer": "curator-qian",
+          "revised_at": 1
+        },
+        "effective_at": 1,
+        "received_at": 1
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "src-ocr-7",
+        "subject": "ocr-page-7",
+        "action": "ingest_source",
+        "data": {
+          "source_id": "ocr-page-7",
+          "kind": "scanned-page",
+          "summary": "手写编年页OCR：A误读为单点 2 CE（后被撤回的误读）",
+          "page": "7",
+          "era_system": "BCE-CE",
+          "translation_version": "zh-v1",
+          "reviewer": "intern-sun",
+          "revised_at": 9
+        },
+        "effective_at": 9,
+        "received_at": 9
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "src-rephoto",
+        "subject": "rephoto-page-2",
+        "action": "ingest_source",
+        "data": {
+          "source_id": "rephoto-page-2",
+          "kind": "scanned-page",
+          "summary": "补拍原始编年页：出借馆预先允许的两种核校结果",
+          "page": "2",
+          "era_system": "BCE-CE",
+          "translation_version": "zh-v2",
+          "reviewer": null,
+          "revised_at": 10
+        },
+        "effective_at": 10,
+        "received_at": 10
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "rd-a-card",
+        "subject": "A",
+        "action": "add_reading",
+        "data": {
+          "source_id": "card-1",
+          "object_id": "A",
+          "candidate": "1 BCE–2 CE",
+          "low_year": 0,
+          "high_year": 2,
+          "confidence": "verified"
+        },
+        "effective_at": 2,
+        "received_at": 2
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "rd-b-card",
+        "subject": "B",
+        "action": "add_reading",
+        "data": {
+          "source_id": "card-2",
+          "object_id": "B",
+          "candidate": "2 CE–3 CE",
+          "low_year": 2,
+          "high_year": 3,
+          "confidence": "verified"
+        },
+        "effective_at": 2,
+        "received_at": 2
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "rd-c-card",
+        "subject": "C",
+        "action": "add_reading",
+        "data": {
+          "source_id": "card-3",
+          "object_id": "C",
+          "candidate": "1 CE–3 CE",
+          "low_year": 1,
+          "high_year": 3,
+          "confidence": "verified"
+        },
+        "effective_at": 2,
+        "received_at": 2
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "rd-a-misread",
+        "subject": "A",
+        "action": "add_reading",
+        "data": {
+          "source_id": "ocr-page-7",
+          "object_id": "A",
+          "candidate": "2 CE",
+          "low_year": 2,
+          "high_year": 2,
+          "confidence": "misread"
+        },
+        "effective_at": 9,
+        "received_at": 9
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-a-zh-1",
+        "subject": "A",
+        "action": "editorial",
+        "data": {
+          "object_id": "A",
+          "language": "zh",
+          "revision": 1,
+          "received_at": 1,
+          "title": "铜灯",
+          "date_label": "1 BCE–2 CE",
+          "source_id": "card-1",
+          "translation_version": "zh-v1"
+        },
+        "effective_at": 3,
+        "received_at": 3
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-a-en-1",
+        "subject": "A",
+        "action": "editorial",
+        "data": {
+          "object_id": "A",
+          "language": "en",
+          "revision": 1,
+          "received_at": 1,
+          "title": "Bronze Lamp",
+          "date_label": "1 BCE–2 CE",
+          "source_id": "card-1",
+          "translation_version": "en-v1"
+        },
+        "effective_at": 3,
+        "received_at": 3
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-a-zh-2",
+        "subject": "A",
+        "action": "editorial",
+        "data": {
+          "object_id": "A",
+          "language": "zh",
+          "revision": 2,
+          "received_at": 9,
+          "title": "铜灯",
+          "date_label": "2 CE",
+          "source_id": "ocr-page-7",
+          "translation_version": "zh-v1"
+        },
+        "effective_at": 9,
+        "received_at": 9
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-a-en-2",
+        "subject": "A",
+        "action": "editorial",
+        "data": {
+          "object_id": "A",
+          "language": "en",
+          "revision": 2,
+          "received_at": 9,
+          "title": "Bronze Lamp",
+          "date_label": "2 CE",
+          "source_id": "ocr-page-7",
+          "translation_version": "en-v1"
+        },
+        "effective_at": 9,
+        "received_at": 9
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-b-zh-1",
+        "subject": "B",
+        "action": "editorial",
+        "data": {
+          "object_id": "B",
+          "language": "zh",
+          "revision": 1,
+          "received_at": 4,
+          "title": "陶壶",
+          "date_label": "2 CE–3 CE",
+          "source_id": "card-2",
+          "translation_version": "zh-v1"
+        },
+        "effective_at": 4,
+        "received_at": 4
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-b-en-1",
+        "subject": "B",
+        "action": "editorial",
+        "data": {
+          "object_id": "B",
+          "language": "en",
+          "revision": 1,
+          "received_at": 4,
+          "title": "Pottery Vessel",
+          "date_label": "2 CE–3 CE",
+          "source_id": "card-2",
+          "translation_version": "en-v1"
+        },
+        "effective_at": 4,
+        "received_at": 4
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-c-zh-1",
+        "subject": "C",
+        "action": "editorial",
+        "data": {
+          "object_id": "C",
+          "language": "zh",
+          "revision": 1,
+          "received_at": 4,
+          "title": "铜镜",
+          "date_label": "1 CE–3 CE",
+          "source_id": "card-3",
+          "translation_version": "zh-v1"
+        },
+        "effective_at": 4,
+        "received_at": 4
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "ed-c-en-1",
+        "subject": "C",
+        "action": "editorial",
+        "data": {
+          "object_id": "C",
+          "language": "en",
+          "revision": 1,
+          "received_at": 4,
+          "title": "Bronze Mirror",
+          "date_label": "1 CE–3 CE",
+          "source_id": "card-3",
+          "translation_version": "en-v1"
+        },
+        "effective_at": 4,
+        "received_at": 4
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "edge-ab",
+        "subject": "A",
+        "action": "add_edge",
+        "data": {
+          "edge_id": "edge-ab",
+          "earlier": "A",
+          "later": "B",
+          "delta": 2,
+          "source_id": "card-1",
+          "reviewer": "curator-qian",
+          "status": "verified"
+        },
+        "effective_at": 5,
+        "received_at": 5
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "edge-ac",
+        "subject": "A",
+        "action": "add_edge",
+        "data": {
+          "edge_id": "edge-ac",
+          "earlier": "A",
+          "later": "C",
+          "delta": 1,
+          "source_id": "card-1",
+          "reviewer": "curator-qian",
+          "status": "verified"
+        },
+        "effective_at": 5,
+        "received_at": 5
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "edge-b2-pending",
+        "subject": "B",
+        "action": "add_edge",
+        "data": {
+          "edge_id": "edge-b2",
+          "earlier": "B",
+          "later": "B",
+          "delta": 0,
+          "source_id": "rephoto-page-2",
+          "reviewer": null,
+          "status": "pending"
+        },
+        "effective_at": 11,
+        "received_at": 11
+      }
+    },
+    {
+      "subsystem": "catalog",
+      "event": {
+        "id": "edge-b3-pending",
+        "subject": "B",
+        "action": "add_edge",
+        "data": {
+          "edge_id": "edge-b3",
+          "earlier": "B",
+          "later": "B",
+          "delta": 0,
+          "source_id": "rephoto-page-2",
+          "reviewer": null,
+          "status": "pending"
+        },
+        "effective_at": 11,
+        "received_at": 11
+      }
+    }
+  ],
+  "scenarios": {
+    "disputed_publish": [
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "pub-disputed",
+          "subject": "catalog",
+          "action": "publish",
+          "data": {"languages": ["zh", "en"], "print_run": "run-2026-disputed"},
+          "effective_at": 20,
+          "received_at": 20
+        }
+      }
+    ],
+    "branch_b2": [
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "verify-b2",
+          "subject": "B",
+          "action": "verify_edge",
+          "data": {
+            "edge_id": "edge-b2",
+            "status": "verified",
+            "reviewer": "lender-expert-li"
+          },
+          "effective_at": 30,
+          "received_at": 30
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "reject-b3",
+          "subject": "B",
+          "action": "verify_edge",
+          "data": {
+            "edge_id": "edge-b3",
+            "status": "rejected",
+            "reviewer": "lender-expert-li"
+          },
+          "effective_at": 30,
+          "received_at": 30
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "pub-b2",
+          "subject": "catalog",
+          "action": "publish",
+          "data": {"languages": ["zh", "en"], "print_run": "run-2026-b2"},
+          "effective_at": 31,
+          "received_at": 31
+        }
+      }
+    ],
+    "branch_b3": [
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "verify-b3",
+          "subject": "B",
+          "action": "verify_edge",
+          "data": {
+            "edge_id": "edge-b3",
+            "status": "verified",
+            "reviewer": "lender-expert-li"
+          },
+          "effective_at": 30,
+          "received_at": 30
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "reject-b2",
+          "subject": "B",
+          "action": "verify_edge",
+          "data": {
+            "edge_id": "edge-b2",
+            "status": "rejected",
+            "reviewer": "lender-expert-li"
+          },
+          "effective_at": 30,
+          "received_at": 30
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "pub-b3",
+          "subject": "catalog",
+          "action": "publish",
+          "data": {"languages": ["zh", "en"], "print_run": "run-2026-b3"},
+          "effective_at": 31,
+          "received_at": 31
+        }
+      }
+    ],
+    "withdraw_relation": [
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "withdraw-ac",
+          "subject": "A",
+          "action": "withdraw_edge",
+          "data": {"edge_id": "edge-ac"},
+          "effective_at": 40,
+          "received_at": 40
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "pub-after-withdraw",
+          "subject": "catalog",
+          "action": "publish",
+          "data": {"languages": ["zh", "en"]},
+          "effective_at": 41,
+          "received_at": 41
+        }
+      }
+    ],
+    "conflict": [
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "edge-conflict",
+          "subject": "A",
+          "action": "add_edge",
+          "data": {
+            "edge_id": "edge-conflict",
+            "earlier": "A",
+            "later": "B",
+            "delta": 5,
+            "source_id": "rephoto-page-2",
+            "reviewer": "curator-qian",
+            "status": "verified"
+          },
+          "effective_at": 45,
+          "received_at": 45
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "pub-conflict",
+          "subject": "catalog",
+          "action": "publish",
+          "data": {"languages": ["zh", "en"]},
+          "effective_at": 46,
+          "received_at": 46
+        }
+      }
+    ],
+    "erratum": [
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "pub-v1-bad",
+          "subject": "catalog",
+          "action": "publish",
+          "data": {"languages": ["zh", "en"], "print_run": "run-2026-v1"},
+          "effective_at": 20,
+          "received_at": 20
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "withdraw-misread-source",
+          "subject": "ocr-page-7",
+          "action": "withdraw_source",
+          "data": {"source_id": "ocr-page-7"},
+          "effective_at": 50,
+          "received_at": 50
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "withdraw-ed-a-zh-2",
+          "subject": "A",
+          "action": "withdraw_editorial",
+          "data": {"object_id": "A", "language": "zh", "revision": 2},
+          "effective_at": 51,
+          "received_at": 51
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "withdraw-ed-a-en-2",
+          "subject": "A",
+          "action": "withdraw_editorial",
+          "data": {"object_id": "A", "language": "en", "revision": 2},
+          "effective_at": 51,
+          "received_at": 51
+        }
+      },
+      {
+        "subsystem": "catalog",
+        "event": {
+          "id": "erratum-1",
+          "subject": "catalog",
+          "action": "erratum",
+          "data": {
+            "erratum_id": "erratum-2026-1",
+            "old_version_id": "PUBLISHED_V1",
+            "justification": "OCR misreading on ocr-page-7 withdrawn after re-photography; joint solver replaces point label 2 CE.",
+            "languages": ["zh", "en"]
+          },
+          "effective_at": 52,
+          "received_at": 52
+        }
+      }
+    ]
+  }
+}
