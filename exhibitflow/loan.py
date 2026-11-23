@@ -43,3 +43,12 @@ def apply(c,e):
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'reseal-approval',old['version'] if old else 0,broken['id']))
   return s.decide(c,e,NAME,'approved','broken-seal-remains-in-history','approved')
  return s.decide(c,e,NAME,'blocked','unknown-action','blocked')
+
+def permit_windows(c,sid):
+ """有效借展时段(撤销后版本不计);只用于限定可计数的时空窗,不改变合同状态。"""
+ revoked=c.execute("SELECT MAX(version) v FROM documents WHERE subject=? AND kind='permit-revocation'",(sid,)).fetchone()['v'] or 0
+ out=[]
+ for x in c.execute("SELECT state FROM documents WHERE subject=? AND kind='permit' AND version>?",(sid,revoked)).fetchall():
+  parts=x['state'].split(':')
+  if len(parts)>=2:out.append((int(parts[0]),int(parts[1])))
+ return sorted(out)

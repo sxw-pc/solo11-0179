@@ -29,4 +29,13 @@ def apply(c,e):
   result='claim' if damaged else 'returned'
   c.execute('INSERT OR REPLACE INTO receipts VALUES(?,?,?,?,?)',(e['id'],sid,'return',result,0))
   return s.decide(c,e,NAME,result,'return-condition-compared',result)
+ if a=='display':
+  start,end=int(p.get('start',0)),int(p.get('end',0))
+  if end<start:return s.decide(c,e,NAME,'blocked','invalid-segment','blocked')
+  c.execute('INSERT INTO display_segments(subject,seg_start,seg_end,source) VALUES(?,?,?,?)',(sid,start,end,e['id']))
+  return s.decide(c,e,NAME,'display-segment','raw-display-period-recorded','display-segment')
  return s.decide(c,e,NAME,'blocked','unknown-action','blocked')
+
+def display_windows(c,sid):
+ """原始展出时段(展厅日志采录);只用于限定可计数的时空窗,不改变展陈状态。"""
+ return [(r['seg_start'],r['seg_end']) for r in c.execute('SELECT seg_start,seg_end FROM display_segments WHERE subject=? ORDER BY seg_start',(sid,))]

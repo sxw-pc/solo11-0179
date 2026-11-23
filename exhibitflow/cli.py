@@ -2,9 +2,9 @@
 import argparse, json
 from pathlib import Path
 from . import storage
-from . import loan, transit, condition
+from . import loan, transit, condition, attendance
 
-HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply}
+HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply,'attendance':attendance.apply}
 
 def run_event(con, subsystem, event):
     if subsystem not in HANDLERS: raise ValueError('unknown-subsystem')
@@ -19,7 +19,7 @@ def audit(con):
     for row in con.execute('SELECT subsystem,payload FROM events ORDER BY rowid'):
         run_event(replay,row['subsystem'],json.loads(row['payload']))
     actual=storage.report(con); expected=storage.report(replay)
-    mismatches=[key for key in ('events','decisions','subjects','allocations','receipts') if actual[key]!=expected[key]]
+    mismatches=[key for key in actual if actual[key]!=expected[key]]
     replay.close()
     return {'ok':not mismatches,'mismatches':mismatches,'replayed_events':len(expected['events'])}
 

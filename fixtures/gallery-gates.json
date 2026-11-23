@@ -1,0 +1,582 @@
+[
+  {
+    "subsystem": "loan",
+    "event": {
+      "id": "g-loan",
+      "subject": "artifact-1",
+      "action": "authorize",
+      "data": {
+        "start": 1795420800,
+        "end": 1795514400,
+        "version": 1
+      },
+      "effective_at": 1795420800,
+      "received_at": 1795420800
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "g-seal",
+      "subject": "artifact-1",
+      "action": "seal",
+      "data": {
+        "seal": "seal-G",
+        "items": 1
+      },
+      "effective_at": 1795420900,
+      "received_at": 1795420900
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "g-h1",
+      "subject": "artifact-1",
+      "action": "handoff",
+      "data": {
+        "box": "g-seal",
+        "from": "museum-A",
+        "to": "carrier"
+      },
+      "effective_at": 1795421000,
+      "received_at": 1795421000
+    }
+  },
+  {
+    "subsystem": "transit",
+    "event": {
+      "id": "g-h2",
+      "subject": "artifact-1",
+      "action": "handoff",
+      "data": {
+        "box": "g-seal",
+        "from": "carrier",
+        "to": "museum-B"
+      },
+      "effective_at": 1795421100,
+      "received_at": 1795421100
+    }
+  },
+  {
+    "subsystem": "condition",
+    "event": {
+      "id": "g-inspect",
+      "subject": "artifact-1",
+      "action": "inspect",
+      "data": {
+        "box": "g-seal",
+        "damage": false
+      },
+      "effective_at": 1795421200,
+      "received_at": 1795421200
+    }
+  },
+  {
+    "subsystem": "condition",
+    "event": {
+      "id": "g-env",
+      "subject": "artifact-1",
+      "action": "environment",
+      "data": {
+        "temp": 21,
+        "humidity": 50
+      },
+      "effective_at": 1795421300,
+      "received_at": 1795421300
+    }
+  },
+  {
+    "subsystem": "condition",
+    "event": {
+      "id": "g-segment",
+      "subject": "artifact-1",
+      "action": "display",
+      "data": {
+        "start": 1795428000,
+        "end": 1795435200
+      },
+      "effective_at": 1795421400,
+      "received_at": 1795421400
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-key-A",
+      "subject": "gallery-1",
+      "action": "register_key",
+      "data": {
+        "gate": "gate-A",
+        "key_domain": "A-2026-11-23",
+        "verify_key": "gateA-key-1",
+        "valid_from": 1795341600,
+        "valid_to": 1795514399
+      },
+      "effective_at": 1795421500,
+      "received_at": 1795421500
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-key-B",
+      "subject": "gallery-1",
+      "action": "register_key",
+      "data": {
+        "gate": "gate-B",
+        "key_domain": "B-2026-11-23",
+        "verify_key": "gateB-key-1",
+        "valid_from": 1795341600,
+        "valid_to": 1795514399
+      },
+      "effective_at": 1795421600,
+      "received_at": 1795421600
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-key-cust",
+      "subject": "gallery-1",
+      "action": "register_key",
+      "data": {
+        "gate": "custodian",
+        "key_domain": "blind-2026-11-23",
+        "verify_key": "custodian-key-1"
+      },
+      "effective_at": 1795421700,
+      "received_at": 1795421700
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-key-auth",
+      "subject": "gallery-1",
+      "action": "register_key",
+      "data": {
+        "gate": "gallery-authority",
+        "key_domain": "auth-2026-11-23",
+        "verify_key": "gallery-auth-key-1"
+      },
+      "effective_at": 1795421800,
+      "received_at": 1795421800
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-counter-mid",
+      "subject": "gallery-1",
+      "action": "counter_reading",
+      "data": {
+        "counter": "gallery-people",
+        "raw": 3
+      },
+      "effective_at": 1795431600,
+      "received_at": 1795431600
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-counter-close",
+      "subject": "gallery-1",
+      "action": "counter_reading",
+      "data": {
+        "counter": "gallery-people",
+        "raw": 0
+      },
+      "effective_at": 1795435200,
+      "received_at": 1795435200
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-pageA1",
+      "subject": "gallery-1",
+      "action": "archive_page",
+      "data": {
+        "page": "pageA1",
+        "gate": "gate-A",
+        "key_domain": "A-2026-11-23",
+        "seq": 1,
+        "rows": [
+          {
+            "token": "a1",
+            "ts": 1795428600,
+            "dir": "in"
+          },
+          {
+            "token": "a1",
+            "ts": 1795429500,
+            "dir": "out"
+          },
+          {
+            "token": "a2",
+            "ts": 1795428660,
+            "dir": "in"
+          },
+          {
+            "token": "a2",
+            "ts": 1795429560,
+            "dir": "out"
+          },
+          {
+            "token": "a3",
+            "ts": 1795428720,
+            "dir": "in"
+          },
+          {
+            "token": "a3",
+            "ts": 1795429620,
+            "dir": "out"
+          },
+          {
+            "token": "a4",
+            "ts": 1795428780,
+            "dir": "in"
+          },
+          {
+            "token": "a4",
+            "ts": 1795429680,
+            "dir": "out"
+          },
+          {
+            "token": "a5",
+            "ts": 1795428840,
+            "dir": "in"
+          },
+          {
+            "token": "a5",
+            "ts": 1795429740,
+            "dir": "out"
+          }
+        ],
+        "signature": "5e19f93ee5beecb30da98287dad3a1cf1ffd664e691088880d412c321cc49dbc"
+      },
+      "effective_at": 1795435300,
+      "received_at": 1795435300
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-pageA2",
+      "subject": "gallery-1",
+      "action": "archive_page",
+      "data": {
+        "page": "pageA2",
+        "gate": "gate-A",
+        "key_domain": "A-2026-11-23",
+        "seq": 2,
+        "rows": [
+          {
+            "token": "a6",
+            "ts": 1795429200,
+            "dir": "in"
+          },
+          {
+            "token": "a6",
+            "ts": 1795430100,
+            "dir": "out"
+          },
+          {
+            "token": "a7",
+            "ts": 1795429260,
+            "dir": "in"
+          },
+          {
+            "token": "a7",
+            "ts": 1795430160,
+            "dir": "out"
+          },
+          {
+            "token": "a8",
+            "ts": 1795429320,
+            "dir": "in"
+          },
+          {
+            "token": "a8",
+            "ts": 1795430220,
+            "dir": "out"
+          }
+        ],
+        "signature": "03abcb91eb3bdb9bced5f9961e55dc43f6e6820e3faffc2b7710c2167d2c42ed"
+      },
+      "effective_at": 1795435310,
+      "received_at": 1795435310
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-pageB1",
+      "subject": "gallery-1",
+      "action": "archive_page",
+      "data": {
+        "page": "pageB1",
+        "gate": "gate-B",
+        "key_domain": "B-2026-11-23",
+        "seq": 1,
+        "rows": [
+          {
+            "token": "b1",
+            "ts": 1795428300,
+            "dir": "in"
+          },
+          {
+            "token": "b1",
+            "ts": 1795429200,
+            "dir": "out"
+          },
+          {
+            "token": "b2",
+            "ts": 1795428360,
+            "dir": "in"
+          },
+          {
+            "token": "b2",
+            "ts": 1795429260,
+            "dir": "out"
+          },
+          {
+            "token": "b3",
+            "ts": 1795428420,
+            "dir": "in"
+          },
+          {
+            "token": "b3",
+            "ts": 1795429320,
+            "dir": "out"
+          },
+          {
+            "token": "b4",
+            "ts": 1795428480,
+            "dir": "in"
+          },
+          {
+            "token": "b4",
+            "ts": 1795429380,
+            "dir": "out"
+          },
+          {
+            "token": "b5",
+            "ts": 1795428540,
+            "dir": "in"
+          },
+          {
+            "token": "b5",
+            "ts": 1795429440,
+            "dir": "out"
+          },
+          {
+            "token": "b6",
+            "ts": 1795428600,
+            "dir": "in"
+          },
+          {
+            "token": "b6",
+            "ts": 1795429500,
+            "dir": "out"
+          },
+          {
+            "token": "b7",
+            "ts": 1795428660,
+            "dir": "in"
+          },
+          {
+            "token": "b7",
+            "ts": 1795429560,
+            "dir": "out"
+          }
+        ],
+        "signature": "6653ece7df8d921adc766efdeac2a363e05bfa2c80585506efd0b17b7790c103"
+      },
+      "effective_at": 1795435320,
+      "received_at": 1795435320
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-bad-page",
+      "subject": "gallery-1",
+      "action": "archive_page",
+      "data": {
+        "page": "pageBAD",
+        "gate": "gate-A",
+        "key_domain": "A-2026-11-23",
+        "seq": 99,
+        "rows": [
+          {
+            "token": "a1",
+            "ts": 1795428600,
+            "dir": "in"
+          },
+          {
+            "token": "a1",
+            "ts": 1795429500,
+            "dir": "out"
+          }
+        ],
+        "signature": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "effective_at": 1795435330,
+      "received_at": 1795435330
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-commit-pageA1",
+      "subject": "gallery-1",
+      "action": "commit_page",
+      "data": {
+        "page": "pageA1"
+      },
+      "effective_at": 1795435400,
+      "received_at": 1795435400
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-commit-pageA2",
+      "subject": "gallery-1",
+      "action": "commit_page",
+      "data": {
+        "page": "pageA2"
+      },
+      "effective_at": 1795435410,
+      "received_at": 1795435410
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-commit-pageB1",
+      "subject": "gallery-1",
+      "action": "commit_page",
+      "data": {
+        "page": "pageB1"
+      },
+      "effective_at": 1795435420,
+      "received_at": 1795435420
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-commit-dup",
+      "subject": "gallery-1",
+      "action": "commit_page",
+      "data": {
+        "page": "pageA1"
+      },
+      "effective_at": 1795435440,
+      "received_at": 1795435440
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-buckets",
+      "subject": "artifact-1",
+      "action": "bucket_totals",
+      "data": {
+        "day": "2026-11-23",
+        "start": 1795428000,
+        "end": 1795435200,
+        "buckets": [
+          {
+            "start": 1795428000,
+            "end": 1795429800,
+            "in": 3,
+            "out": 1
+          },
+          {
+            "start": 1795429800,
+            "end": 1795431600,
+            "in": 3,
+            "out": 2
+          },
+          {
+            "start": 1795431600,
+            "end": 1795433400,
+            "in": 4,
+            "out": 3
+          },
+          {
+            "start": 1795433400,
+            "end": 1795435200,
+            "in": 3,
+            "out": 7
+          }
+        ],
+        "capacity": 5,
+        "max_repeat": 2,
+        "counter": "gallery-people",
+        "signer_domain": "auth-2026-11-23",
+        "signature": "6e41a0f4261815e7e858a8444af1ac8f971fc4fabd2290d11c3be41609273373"
+      },
+      "effective_at": 1795435500,
+      "received_at": 1795435500
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-prove-interval",
+      "subject": "artifact-1",
+      "action": "prove",
+      "data": {
+        "day": "2026-11-23",
+        "route": "interval"
+      },
+      "effective_at": 1795435600,
+      "received_at": 1795435600
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-cert",
+      "subject": "artifact-1",
+      "action": "overlap_certificate",
+      "data": {
+        "day": "2026-11-23",
+        "a_domain": "A-2026-11-23",
+        "b_domain": "B-2026-11-23",
+        "intersection": 3,
+        "blind_domain": "blind-2026-11-23",
+        "pages": [
+          "pageA1",
+          "pageA2",
+          "pageB1"
+        ],
+        "signature": "0aceb5490ee506fc8e5431e5999fc79c2d235a4a271ffd69583c74565253bb9a"
+      },
+      "effective_at": 1795435700,
+      "received_at": 1795435700
+    }
+  },
+  {
+    "subsystem": "attendance",
+    "event": {
+      "id": "g-prove-exact",
+      "subject": "artifact-1",
+      "action": "prove",
+      "data": {
+        "day": "2026-11-23",
+        "route": "exact",
+        "certificate": "g-cert",
+        "revision_reason": "custodian-blinded-intersection-received"
+      },
+      "effective_at": 1795435800,
+      "received_at": 1795435800
+    }
+  }
+]
