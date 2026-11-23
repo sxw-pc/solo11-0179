@@ -2,9 +2,9 @@
 import argparse, json
 from pathlib import Path
 from . import storage
-from . import loan, transit, condition
+from . import loan, transit, condition, customs
 
-HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply}
+HANDLERS={'loan':loan.apply,'transit':transit.apply,'condition':condition.apply,'customs':customs.apply}
 
 def run_event(con, subsystem, event):
     if subsystem not in HANDLERS: raise ValueError('unknown-subsystem')
@@ -19,12 +19,20 @@ def audit(con):
     for row in con.execute('SELECT subsystem,payload FROM events ORDER BY rowid'):
         run_event(replay,row['subsystem'],json.loads(row['payload']))
     actual=storage.report(con); expected=storage.report(replay)
-    mismatches=[key for key in ('events','decisions','subjects','allocations','receipts') if actual[key]!=expected[key]]
+    mismatches=[key for key in storage.REPORT_TABLES if actual[key]!=expected[key]]
     replay.close()
     return {'ok':not mismatches,'mismatches':mismatches,'replayed_events':len(expected['events'])}
 
+def _customs_scenario(con, data, evidence, legacy):
+    rows=customs.fixture_events(data,evidence=evidence,legacy=legacy)
+    result=[run_event(con,x['subsystem'],x['event']) for x in rows]
+    trip, document=data['trip'],data['document']
+    report=customs.certificates(con,trip,document)
+    return {'results':result,'certificates':report['certificates'],
+            'resolution':report['resolution'],'audit':audit(con)}
+
 def main(argv=None):
-    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); args=p.parse_args(argv)
+    p=argparse.ArgumentParser(); p.add_argument('command',choices=['init','demo','report','audit','loan','transit','condition','customs']); p.add_argument('--db',default='local.db'); p.add_argument('--fixture'); p.add_argument('--evidence',default='sealing_scan',choices=['sealing_scan','unboxing_recheck']); p.add_argument('--legacy',action='store_true'); args=p.parse_args(argv)
     con=storage.connect(args.db)
     if args.command=='init': print(json.dumps({'db':args.db,'initialized':True}));return
     if args.command=='report': print(json.dumps(storage.report(con),ensure_ascii=False,indent=2));return
@@ -35,6 +43,8 @@ def main(argv=None):
         print(json.dumps({'results':result,'report':storage.report(con)},ensure_ascii=False,indent=2));return
     if not args.fixture: p.error('--fixture required')
     data=json.loads(Path(args.fixture).read_text(encoding='utf-8'))
+    if args.command=='customs' and isinstance(data,dict) and 'columns' in data and 'trip' in data:
+        print(json.dumps(_customs_scenario(con,data,args.evidence,args.legacy),ensure_ascii=False,indent=2));return
     events=data if isinstance(data,list) else [data]
     print(json.dumps([run_event(con,e['subsystem'],e['event']) if 'event' in e else run_event(con,args.command,e) for e in events],ensure_ascii=False,indent=2))
 

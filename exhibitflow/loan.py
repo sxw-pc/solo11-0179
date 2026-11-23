@@ -1,10 +1,28 @@
 from . import storage as s
+from . import customs
 NAME='借展契约'
+
+def _customs_gate(c,e,sid,p):
+    """Consume the per-item customs certificate package.
+
+    A customs sheet that names this artifact but leaves its piece-number
+    column unconfirmed must not authorize the loan as if the whole trip were
+    cleared.  Artifacts absent from the sheet are unaffected.
+    """
+    check=customs.release_check(c,sid,
+                                trip=p.get('trip') or p.get('qr'),
+                                box=p.get('box'),seal=p.get('seal'),
+                                document=p.get('customs_document'))
+    return check
+
 def apply(c,e):
  a=e['action'];p=e.get('data',{});sid=e['subject']; old=s.latest(c,'subjects',sid)
  if a=='authorize':
   begin,end=int(p['start']),int(p['end'])
   if end<begin:return s.decide(c,e,NAME,'blocked','invalid-period','blocked')
+  gate=_customs_gate(c,e,sid,p)
+  if gate.get('required') and not gate.get('allowed'):
+   return s.decide(c,e,NAME,'blocked','customs-item-'+gate.get('status','unresolved'),'blocked')
   revoked=c.execute("SELECT MAX(version) v FROM documents WHERE subject=? AND kind='permit-revocation'",(sid,)).fetchone()['v'] or 0
   periods=c.execute("SELECT state FROM documents WHERE subject=? AND kind='permit' AND version>?",(sid,revoked)).fetchall()
   if any(not (end<int(x['state'].split(':')[0]) or begin>int(x['state'].split(':')[1])) for x in periods):return s.decide(c,e,NAME,'blocked','overlapping-loan','blocked')
@@ -12,6 +30,11 @@ def apply(c,e):
   c.execute('INSERT OR REPLACE INTO subjects VALUES(?,?,?,?)',(sid,'artifact','authorized',version))
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'permit',version,f'{begin}:{end}'))
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id']+'-parties',sid,'parties',version,f'{p.get("lender","museum-A")}:{p.get("borrower","museum-B")}'))
+  if gate.get('status')==customs.STATUS_CONFIRMED:
+   # bind the exact per-item certificate (column + evidence) into the permit
+   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',
+             (e['id']+'-customs',sid,'customs-clearance',version,
+              f"{gate['column']}:{gate.get('destination')}:{gate['attribution_id']}"))
   return s.decide(c,e,NAME,'authorized','period-and-object-approved','authorized')
  if a=='revoke':
   if not old:return s.decide(c,e,NAME,'blocked','no-loan','blocked')
@@ -21,8 +44,11 @@ def apply(c,e):
   return s.decide(c,e,NAME,'revoked','in-transit-intercept-required','revoked')
  if a=='extend':
   if not old or old['state'] not in ('authorized','paused') or int(p.get('end',0))<=e['effective_at']:return s.decide(c,e,NAME,'blocked','invalid-extension','blocked')
+  gate=_customs_gate(c,e,sid,p)
+  if gate.get('required') and not gate.get('allowed'):
+   return s.decide(c,e,NAME,'blocked','customs-item-'+gate.get('status','unresolved'),'blocked')
   version=old['version']+1
-  c.execute("UPDATE subjects SET state='authorized',version=? WHERE id=?",(version,sid))
+  c.execute('UPDATE subjects SET state=\'authorized\',version=? WHERE id=?',(version,sid))
   c.execute('INSERT OR REPLACE INTO documents VALUES(?,?,?,?,?)',(e['id'],sid,'permit',version,f'{e["effective_at"]}:{p["end"]}'))
   return s.decide(c,e,NAME,'extended','exhibition-term-renegotiated','authorized')
  if a=='liability':

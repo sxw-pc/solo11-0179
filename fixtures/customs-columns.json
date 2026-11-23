@@ -1,0 +1,81 @@
+{
+  "description": "两件借展品同车出境的双栏放行单：一箱 artifact-1/artifact-2，车次 QR=TR-8，左栏 X-31 允许目的地 B，右栏 X-32 只允许本地转运。票面没有写明哪一件对应哪一栏。",
+  "trip": "TR-8",
+  "box": "BOX-TR-8",
+  "seal": "seal-TR-8",
+  "document": "DECL-2026-0042",
+  "qr": {
+    "trip": "TR-8",
+    "scope": "trip",
+    "payload": "TR-8|BOX-TR-8|release"
+  },
+  "manifest": {
+    "trip": "TR-8",
+    "box": "BOX-TR-8",
+    "seal": "seal-TR-8",
+    "document": "DECL-2026-0042",
+    "artifacts": [
+      {"artifact": "artifact-1", "collection_code": "COL-ART-0001"},
+      {"artifact": "artifact-2", "collection_code": "COL-ART-0002"}
+    ]
+  },
+  "seal_scan": {
+    "media": {"mime": "application/octet-stream", "bytes_b64": "U0VBTC1TQ0FOLVJFR0lTVEVS", "digest": "97de6d6f1f6966ae3f74722b54de2e53c36f35870fcb75325793f4553e6dd451"},
+    "events": [
+      {"id": "sc1", "artifact": "artifact-1", "collection_code": "COL-ART-0001", "box": "BOX-TR-8", "seal": "seal-TR-8", "col_no": "X-31", "signed_at": 2},
+      {"id": "sc2", "artifact": "artifact-2", "collection_code": "COL-ART-0002", "box": "BOX-TR-8", "seal": "seal-TR-8", "col_no": "X-32", "signed_at": 2}
+    ]
+  },
+  "unboxing_recheck": {
+    "actor": "customs-officer-7",
+    "observed_at": 6,
+    "rows": [
+      {"artifact": "artifact-1", "engraved_code": "COL-ART-0001", "col_no": "X-32"},
+      {"artifact": "artifact-2", "engraved_code": "COL-ART-0002", "col_no": "X-31"}
+    ]
+  },
+  "columns": [
+    {
+      "col_no": "X-31",
+      "destination": "B",
+      "scope": "export",
+      "permitted_destinations": ["B"],
+      "valid_from": 1,
+      "valid_to": 20,
+      "x": 40, "y": 60, "w": 260, "h": 120,
+      "signature": {
+        "seal_id": "seal-customs-x31",
+        "x": 30, "y": 50, "w": 290, "h": 150,
+        "bytes_b64": "Q1VTVE9NUy1TRUFMLVgzMQ==",
+        "digest": "91c2bed161bac63863c9ec228940a93cb57a5813940334170e7cdc84bf667a65"
+      },
+      "ocr_tokens": [
+        {"col_no": "X-31", "idx": 0, "ch": "X", "x": 70, "y": 90, "w": 30, "h": 40, "confidence": 0.99},
+        {"col_no": "X-31", "idx": 1, "ch": "-", "x": 105, "y": 90, "w": 12, "h": 40, "confidence": 0.98},
+        {"col_no": "X-31", "idx": 2, "ch": "3", "x": 122, "y": 90, "w": 30, "h": 40, "confidence": 0.97},
+        {"col_no": "X-31", "idx": 3, "ch": "1", "x": 157, "y": 90, "w": 30, "h": 40, "confidence": 0.97}
+      ]
+    },
+    {
+      "col_no": "X-32",
+      "destination": "LOCAL",
+      "scope": "local",
+      "permitted_destinations": ["B", "LOCAL"],
+      "valid_from": 1,
+      "valid_to": 20,
+      "x": 340, "y": 60, "w": 260, "h": 120,
+      "signature": {
+        "seal_id": "seal-customs-x32",
+        "x": 330, "y": 50, "w": 290, "h": 150,
+        "bytes_b64": "Q1VTVE9NUy1TRUFMLVgzMg==",
+        "digest": "6e58afbd46dc9075a917c96f20d063fd6a86f7dcbd886edeae31fe520aa57b14"
+      },
+      "ocr_tokens": [
+        {"col_no": "X-32", "idx": 0, "ch": "X", "x": 370, "y": 90, "w": 30, "h": 40, "confidence": 0.99},
+        {"col_no": "X-32", "idx": 1, "ch": "-", "x": 405, "y": 90, "w": 12, "h": 40, "confidence": 0.98},
+        {"col_no": "X-32", "idx": 2, "ch": "3", "x": 422, "y": 90, "w": 30, "h": 40, "confidence": 0.97},
+        {"col_no": "X-32", "idx": 3, "ch": "2", "x": 457, "y": 90, "w": 30, "h": 40, "confidence": 0.97}
+      ]
+    }
+  ]
+}
